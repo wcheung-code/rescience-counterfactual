@@ -1,7 +1,7 @@
 [Re] Counterfactual Risk Assessments, Evaluation, and Fairness
 ==============================
 
-A short description of the project.
+ReScience C submission regarding the replication of \'Counterfactual Risk Assessments, Evaluation, and Fairness\' (2020)
 
 Project Organization
 ------------
