@@ -1,14 +1,12 @@
 import numpy as np
 import pandas as pd
 
-
 class SyntheticData():
     def __init__(self, treatment_effect, treatment_assignment_bias, seed = 0):
         self.seed = seed
         np.random.seed(self.seed)
         self.treatment_effect = treatment_effect
         self.treatment_assignment_bias = treatment_assignment_bias
-
 
     def generate(self, num_points, treatment_as_feature = False):
 

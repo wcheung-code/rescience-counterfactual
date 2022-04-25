@@ -31,18 +31,28 @@
 
 import pandas as pd
 import json
+import os
 
 from SyntheticData import SyntheticData
 
 if __name__ == '__main__':
 
+    # project_dir = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
+    # dotenv_path = os.path.join(project_dir, '.env')
+    # dotenv.load_dotenv(dotenv_path)
+    DATA_DIRECTORY = os.environ.get("DATA_DIRECTORY")
+    print(DATA_DIRECTORY)
+
+    c, k = 0.1, 1.6
+    num_points = 100000
+
     synthetic_data = SyntheticData(
-                               treatment_effect = 0.1, 
-                               treatment_assignment_bias = 1.6,
+                               treatment_effect = c, 
+                               treatment_assignment_bias = k,
                                seed = 1)
-    df, config = synthetic_data.generate(num_points = 100000)
-    print(df)
-    print(config)
-    df.to_csv('./data/raw/synthetic_data.csv', encoding='utf-8', index=False)
-    with open("./data/config/synthetic_config.json", "w") as f:
+    df, config = synthetic_data.generate(num_points = num_points)
+
+
+    df.to_csv(os.path.join(DATA_DIRECTORY, 'raw', 'synthetic_data.csv'), encoding='utf-8', index=False)
+    with open(os.path.join(DATA_DIRECTORY, 'config', 'synthetic_config.json'), "w") as f:
         json.dump(config, f)
