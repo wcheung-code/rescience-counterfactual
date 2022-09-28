@@ -1,18 +1,21 @@
 ARG mode
 
-FROM rocker/tidyverse:4.0.1 AS replication
-RUN echo "this is the stage that sets VAR=replication"
-ENV VAR="replication"
+## Reproduces all results in original research paper using provided R code:
+FROM rocker/tidyverse:4.0.1 AS reproduction
+RUN echo "this is the stage that sets VAR=reproduction"
+ENV VAR="reproduction"
 
 FROM rocker/tidyverse:4.0.1 AS validation
 RUN echo "this is the stage that sets VAR=validation"
 ENV VAR="validation"
 
-WORKDIR /app
-COPY requirements.txt /app/requirements.txt
-COPY requirements.R /app/requirements.R
-# pre install the packages during build
-RUN Rscript requirements.R
-
 FROM ${mode} AS final
 RUN echo "VAR is equal to ${VAR}"
+
+ADD . / app/
+WORKDIR /app
+
+RUN find ./src -mindepth 1 ! -regex '^./src/'$VAR'\(/.*\)?' -delete
+
+# pre install the packages during build
+RUN Rscript requirements.R
