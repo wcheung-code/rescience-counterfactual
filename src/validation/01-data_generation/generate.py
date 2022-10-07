@@ -41,7 +41,7 @@ if __name__ == '__main__':
         extracts, dir_name = [], f'{DATA_DIRECTORY}/{language}'
         if os.path.isdir(dir_name):
             if not glob.glob(os.path.join(dir_name, '*.csv')):
-                os.system(f"{interpreter[language]} ./src/validation/data/{language}/make_dataset.{suffix[language]} --num_seeds=150")
+                os.system(f"{interpreter[language]} ./src/validation/01-data_generation/{language}/make_dataset.{suffix[language]} --num_seeds=150")
         else:
             print(f"directory {dir_name} doesn't exist")
 
