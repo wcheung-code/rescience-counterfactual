@@ -16,7 +16,7 @@ source("./github/plot_params.r")
 # name of folder to save the plot figures in
 fig_folder <- "./reproduction/"
 # name of folder to save the data files in
-data_folder <- "./data/synthetic/"
+data_folder <- "./data/reproduction/"
 # path of python environment
 python_path <- "python3" # "/Users/amandacoston/anaconda/envs/py3/bin/python" 
 

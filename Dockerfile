@@ -28,15 +28,23 @@ RUN find ./data -mindepth 1 ! -regex '^./data/'$VAR'\(/.*\)?' -delete
 RUN if [ "$VAR" = "reproduction" ] ; then \
         git clone https://github.com/mandycoston/counterfactual ./github/;\
         git clone https://github.com/mandycoston/equalized_odds_and_calibration/ ./github/equalized_odds_and_calibration/;\
-        mkdir reproduction; mkdir data; mkdir data/synthetic;\
-        chmod 777 reproduction;\
+        mkdir reproduction;\
+    elif [ "$VAR" = "validation" ] ; then \
+        mkdir validation; \
     else \
         echo do something else; \
     fi
 
 RUN sudo apt-get update
-RUN sudo apt-get install -y python3-pip
+RUN sudo apt-get install -y python3-pip 
+RUN sudo apt install -y texlive \
+    texlive-latex-extra \ 
+    texlive-fonts-recommended \
+    dvipng \ 
+    cm-super
+
 RUN pip install --upgrade pip
 # pre install the packages during build
 RUN Rscript requirements.R
+RUN pip install latex
 RUN pip install -r requirements.txt
