@@ -3,6 +3,9 @@ library(ranger)
 library(xtable)
 library(plyr)
 
+library(furrr)
+options(warn=-1)
+
 DATA_DIRECTORY = "./data/validation/01-data_generation/r"
 
 sigmoid <- function(x) {
@@ -21,7 +24,7 @@ c <- 0.1
 args = commandArgs(trailingOnly=TRUE)
 num_seeds = strtoi(unlist(strsplit(args[1], '='))[2])
 
-for (seed in 0:(num_seeds - 1)) {
+generate_csv <- function(seed) {
   set.seed(seed)
   X <- rnorm(n, 0)
   A <- rbinom(n, size = 1, p)
@@ -43,7 +46,9 @@ for (seed in 0:(num_seeds - 1)) {
   test <- df %>%
     filter(is_train == 0) %>%
     select(-is_train)
-  write.csv(df, file=paste0(DATA_DIRECTORY, "/seed_", sprintf("%02d", seed), ".csv", sep = ""), row.names = FALSE)
+  write.csv(df, file=paste0(DATA_DIRECTORY, "/seed_", sprintf("%03d", seed), ".csv", sep = ""), row.names = FALSE)
+
 }
 
-
+plan(multisession, workers = 8)
+asdf <- future_map(c(0:(num_seeds - 1)), generate_csv)

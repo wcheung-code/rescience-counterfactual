@@ -95,14 +95,14 @@ test_post <- read.csv(paste(data_folder, "test_post_c", c_str, "_k", k_str, ".cs
 roc_df <- process_post_synthetic(test_post, "A = 1", "A = 0", "mu_count", "eo_fair_pred", "y0", "y", "Original", "Post-Processed")
 
 ggplot(filter(roc_df, Evaluation == "Counterfactual"), aes(x = FPR, y = TPR, color = Group, fill = Group)) + geom_line() + facet_grid(. ~ Method, switch = "y") + scale_colour_manual(values = group_colors_invert) + theme_bw(base_size = 15) + scale_x_continuous(labels = scale_format) + scale_y_continuous(labels = scale_format) + coord_fixed(ratio = 1) + theme(legend.position = "bottom", legend.key.width = unit(2, "cm")) + ylab("Recall")
-ggsave(paste(fig_folder, "synth_post_roc_c", c_str, "_k", k_str, ".png", sep = ""), width = 5, height = 4, dpi = 1000)
+ggsave(paste(fig_folder, "fig_synth_post_roc_c", c_str, "_k", k_str, ".png", sep = ""), width = 5, height = 4, dpi = 1000)
 
 errors <- compute_rates_synthetic(0.5, filter(test_post, A == 1)$mu_count, y0_values = filter(test_post, A == 1)$y0, y_values = filter(test_post, A == 1)$y, group = "A=1", method = "Original") %>%
   bind_rows(compute_rates_synthetic(0.5, filter(test_post, A == 0)$mu_count, filter(test_post, A == 0)$y0, filter(test_post, A == 0)$y, group = "A=0", method = "Original")) %>%
   bind_rows(compute_rates_synthetic(0.5, filter(test_post, A == 1)$eo_fair_pred, y0_values = filter(test_post, A == 1)$y0, y_values = filter(test_post, A == 1)$y, group = "A=1", method = "Post-Proc.")) %>%
   bind_rows(compute_rates_synthetic(0.5, filter(test_post, A == 0)$eo_fair_pred, filter(test_post, A == 0)$y0, filter(test_post, A == 0)$y, group = "A=0", method = "Post-Proc."))
 
-print(xtable(errors, caption = paste("Observational and counterfactual generalized FPR/FNR for the original and post-processed models for c =", toString(c), ", k = ", toString(k), sep = ""), label = paste("synth_post_costs_c", c_str, "_k", k_str, sep = "")), floating = FALSE, latex.environments = NULL, file = paste(fig_folder, "synth_post_table_c", c_str, "_k", k_str, ".tex", sep = ""), include.rownames = FALSE)
+print(xtable(errors, caption = paste("Observational and counterfactual generalized FPR/FNR for the original and post-processed models for c =", toString(c), ", k = ", toString(k), sep = ""), label = paste("fig_synth_post_costs_c", c_str, "_k", k_str, sep = "")), floating = FALSE, latex.environments = NULL, file = paste(fig_folder, "fig_synth_post_table_c", c_str, "_k", k_str, ".tex", sep = ""), include.rownames = FALSE)
 
 # DR estimate of counterfactual calibration curve
 calib_dr <- compute_calib_df_dr(num_bins = 20, dat = test,obs_preds = quo(mu_obs),   count_preds = quo(mu_count), pi = quo(pi), Y = quo(y), treat = quo(treat_num), mu_true = quo(mu_count), attr = quo(A), attr_name = "A", attr_name_other = "not A") %>% filter(Group == "All")
@@ -126,7 +126,7 @@ calib_comb$Evaluation <- factor(calib_comb$Evaluation, levels = c("Observational
 calib_comb %>%
   mutate(Model = calib_comb$Method) %>%
   ggplot(aes(x = Average.score, y = Rate, color = Model, fill = Model)) + facet_grid(. ~ Evaluation, labeller = as_labeller(evaluation_names_synth)) + scale_fill_manual(values = method_colors) + scale_color_manual(values = method_colors) + geom_ribbon(aes(ymin = Low, ymax = High, alpha = 0.4), linetype = 0) + geom_abline(slope = 1, intercept = 0, linetype = 5) + geom_line() + ylab("Outcome rate") + xlab("Average risk score") + scale_x_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c(0, .25, .5, .75, 1), limits = c(0, 1)) + scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c(0, .25, .5, .75, 1), limits = c(0, 1)) + coord_fixed(ratio = 1) + theme_bw(base_size = 15) + theme(legend.position = "none") + scale_alpha(guide = "none")
-ggsave(paste(fig_folder, "synth_calib_c", c_str, "_k", k_str, ".png", sep = ""), width = 10, height = 3.6, dpi = 100)
+ggsave(paste(fig_folder, "fig_synth_calib_c", c_str, "_k", k_str, ".png", sep = ""), width = 10, height = 3.6, dpi = 100)
 
 
 t_arr <- seq(0, 1, 0.001)
@@ -153,7 +153,7 @@ pr_comb <- rbind(pr_true, select(pr_dr, -Precision.lower, -Precision.upper), pr_
 pr_comb$Evaluation <- factor(pr_comb$Evaluation, levels = c("Observational", "Control", "Doubly-robust", "True Counterfactual"))
 pr_comb$Model <- pr_comb$Method
 ggplot(pr_comb, aes(x = Recall, y = Precision, color = Model, fill = Model)) + geom_line() + scale_color_manual(values = method_colors) + facet_grid(. ~ Evaluation, labeller = as_labeller(evaluation_names_synth)) + coord_fixed(ratio = 1) + scale_x_continuous(labels = scale_format) + scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c(0, .25, .5, .75, 1), limits = c(0, 1)) + theme_bw(base_size = 15) + theme(legend.position = "top", legend.key.width = unit(2, "cm"))
-ggsave(paste(fig_folder, "synth_pr_c", c_str, "_k", k_str, ".png", sep = ""), width = 10, height = 4, dpi = 1000)
+ggsave(paste(fig_folder, "fig_synth_pr_c", c_str, "_k", k_str, ".png", sep = ""), width = 10, height = 4, dpi = 1000)
 
 
 t_arr <- seq(0, 1, .01)
@@ -179,4 +179,4 @@ auc_all$Evaluation <- factor(auc_all$Evaluation, levels = c("Observational", "Co
 auc_all$Model <- auc_all$Method
 
 auc_all %>% ggplot(aes(x = FPR, y = Recall, color = Model, fill = Model)) + geom_line() + facet_grid(. ~ Evaluation, labeller = as_labeller(evaluation_names_synth)) + theme_bw(base_size = 15) + scale_color_manual(values = method_colors) + scale_x_continuous(labels = scale_format) + scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c(0, .25, .5, .75, 1), limits = c(0, 1)) + coord_fixed(ratio = 1) + theme(legend.position = "none")
-ggsave(paste(fig_folder, "synth_roc_c", c_str, "_k", k_str, ".png", sep = ""), width = 10, height = 3.6, dpi = 1000)
+ggsave(paste(fig_folder, "fig_synth_roc_c", c_str, "_k", k_str, ".png", sep = ""), width = 10, height = 3.6, dpi = 1000)

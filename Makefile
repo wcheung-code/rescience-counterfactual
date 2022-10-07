@@ -31,12 +31,12 @@ endif
 # data: requirements
 # 	$(PYTHON_INTERPRETER) src/python/data/make_dataset.py
 
-## Delete all compiled Python files, validation intermediate files and reproduction figure outputs
+## Delete all compiled Python files, validation intermediate files and figure outputs
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 	find . -type f -name "seed_*.csv" -delete
-	find . -type f -name "synth_*" -delete
+	find . -type f -name "fig_*" -delete
 
 # Set up python interpreter environment
 # create_environment:

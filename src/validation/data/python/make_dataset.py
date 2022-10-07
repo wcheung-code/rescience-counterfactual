@@ -29,12 +29,12 @@
 
 #     main()
 
+import numpy as np
 import pandas as pd
 import json
 import os
 import argparse
-
-
+from concurrent.futures import ThreadPoolExecutor
 
 from SyntheticData import SyntheticData
 
@@ -53,12 +53,15 @@ if __name__ == '__main__':
     args = parser.parse_args()
     num_seeds = int(args.num_seeds)
 
-    for seed in range(num_seeds):
+    def generate_data(seed, c = c, k = k, num_points = num_points):
         synthetic_data = SyntheticData(
-                                treatment_effect = c, 
-                                treatment_assignment_bias = k,
-                                seed = seed)
+                        treatment_effect = c, 
+                        treatment_assignment_bias = k,
+                        seed = seed)
         df, _ = synthetic_data.generate(num_points = num_points)
-        df.to_csv(os.path.join(DATA_DIRECTORY, f'seed_{str(seed).zfill(2)}.csv'), encoding='utf-8', index=False)
+        df.to_csv(os.path.join(DATA_DIRECTORY, f'seed_{str(seed).zfill(3)}.csv'), encoding='utf-8', index=False)
+
+    with ThreadPoolExecutor(max_workers = 8) as executor:
+        executor.map(generate_data, range(num_seeds))
 
 
