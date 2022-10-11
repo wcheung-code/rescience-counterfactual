@@ -40,12 +40,6 @@ generate_csv <- function(seed) {
     mutate(treat = as.factor(plyr::mapvalues(df$treat_num, c(1, 0), c("treat", "control")))) %>%
     mutate(outcome = factor(plyr::mapvalues(df$y, c(1, 0), c("harm", "ok")), levels = c("ok", "harm")))
 
-  train <- df %>% 
-    filter(is_train == 1) %>%
-    select(-is_train)
-  test <- df %>%
-    filter(is_train == 0) %>%
-    select(-is_train)
   write.csv(df, file=paste0(DATA_DIRECTORY, "/seed_", sprintf("%03d", seed), ".csv", sep = ""), row.names = FALSE)
 
 }

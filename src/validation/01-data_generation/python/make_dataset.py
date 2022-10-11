@@ -49,7 +49,7 @@ if __name__ == '__main__':
     num_points = 100000
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--num_seeds", help="number of random seeds", default=30)
+    parser.add_argument("--num_seeds", help="number of random seeds", default=150)
     args = parser.parse_args()
     num_seeds = int(args.num_seeds)
 
