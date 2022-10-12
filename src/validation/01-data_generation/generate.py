@@ -18,7 +18,7 @@ plt.rcParams.update({
 
 DATA_DIRECTORY = './data/validation/01-data_generation'
 # TODO: Uncomment for Docker container
-#FIGURE_DIRECTORY = './validation'
+FIGURE_DIRECTORY = './validation'
 
 interpreter = {
     'python': 'python3',
@@ -56,7 +56,7 @@ def generate_means(filename):
 if __name__ == '__main__':
 
     # TODO: Uncomment for Docker container
-#    os.makedirs(f"{FIGURE_DIRECTORY}/01-data_generation", exist_ok = True)
+    os.makedirs(f"{FIGURE_DIRECTORY}/01-data_generation", exist_ok = True)
 
     rates, extracts = {}, []
 

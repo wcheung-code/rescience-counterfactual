@@ -24,14 +24,17 @@ fit_models <- function(seed) {
     filter(is_train == 0) %>%
     select(-is_train)
 
+  print(seed)
   # Train propensity model
-  pi_lr <- glm("treat_num ~.", data = select(train, Z, A, treat_num), family = "binomial")
+  pi_lr <- glm(as.factor(treat_num) ~., data = select(train, Z, A, treat_num), family = "binomial")
 
   # Train regression models
-  obs_lr <- glm("outcome ~.", data = select(train, Z, A, outcome), family = "binomial")
-  count_lr <- glm("outcome ~.", data = select(filter(train, treat_num == 0), Z, A, outcome), family = "binomial")
+  obs_lr <- glm(as.factor(outcome) ~., data = select(train, Z, A, outcome), family = "binomial")
+  count_lr <- glm(as.factor(outcome) ~., data = select(filter(train, treat_num == 0), Z, A, outcome), family = "binomial")
 
   results <- do.call(rbind, Map(data.frame, propensity=dummy.coef(pi_lr), observational=dummy.coef(obs_lr), counterfactual=dummy.coef(count_lr)))
+
+  print(seed)
 
   write.csv(results, file=paste0(DATA_DIRECTORY, "/seed_", sprintf("%03d", seed), ".csv", sep = ""), row.names = TRUE)
 

@@ -20,7 +20,6 @@ DATA_DIRECTORY = './data/validation/02-model_training'
 # TODO: Uncomment for Docker container
 FIGURE_DIRECTORY = './validation'
 
-
 interpreter = {
     'python': 'python3',
     'r': 'Rscript'
