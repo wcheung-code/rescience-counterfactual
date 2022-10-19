@@ -3,7 +3,7 @@ import pandas as pd
 from sklearn.metrics import roc_curve
 from fairlearn.metrics import MetricFrame
 
-from DataVisualizer import DataVisualizer
+from src.DataVisualizer import DataVisualizer
 
 class EqualizedOddsPostProcessingAnalysis(DataVisualizer):
     def __init__(self, parameters):

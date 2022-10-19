@@ -5,13 +5,13 @@ import argparse
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 
-from SyntheticData import SyntheticData
-from SupervisedLearningModel import SupervisedLearningModel
-from ReweighingAnalysisVisualizer import ReweighingAnalysisVisualizer
-from MetricFrameGenerator import MetricFrameGenerator
-from EqualizedOddsPostProcesser import EqualizedOddsPostProcesser
-from EqualizedOddsPostProcessingAnalysis import EqualizedOddsPostProcessingAnalysis
-from FairnessMetricVisualizer import FairnessMetricVisualizer
+from src.SyntheticData import SyntheticData
+from src.SupervisedLearningModel import SupervisedLearningModel
+from src.ReweighingAnalysisVisualizer import ReweighingAnalysisVisualizer
+from src.MetricFrameGenerator import MetricFrameGenerator
+from src.EqualizedOddsPostProcesser import EqualizedOddsPostProcesser
+from src.EqualizedOddsPostProcessingAnalysis import EqualizedOddsPostProcessingAnalysis
+from src.FairnessMetricVisualizer import FairnessMetricVisualizer
 
 if __name__ == '__main__':
 

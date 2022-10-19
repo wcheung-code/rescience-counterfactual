@@ -25,11 +25,12 @@ ADD . / app/
 WORKDIR /app
 
 ## Removes all irrelevant src files with respect to provided mode parameter
-RUN find ./src -mindepth 1 ! -regex '^./src/'$VAR'\(/.*\)?' -delete
+RUN find ./mode -mindepth 1 ! -regex '^./mode/'$VAR'\(/.*\)?' -delete
 ## Removes all irrelevant data files with respect to provided mode parameter
 #RUN find ./data -mindepth 1 ! -regex '^./data/'$VAR'\(/.*\)?' -delete
 
-RUN mkdir -p data $VAR/post_processed $VAR/precision_recall $VAR/roc $VAR/calibration;
+RUN mkdir -p data/post_processed data/precision_recall data/roc data/calibration;
+RUN mkdir -p $VAR/post_processed $VAR/precision_recall $VAR/roc $VAR/calibration;
 
 RUN if [ "$VAR" = "reproduction" ] ; then \
         sudo apt-get update; \
@@ -38,18 +39,20 @@ RUN if [ "$VAR" = "reproduction" ] ; then \
         git clone https://github.com/mandycoston/equalized_odds_and_calibration/ ./github/equalized_odds_and_calibration/;\
         Rscript requirements.R; \
     elif [ "$VAR" = "validation" ] ; then \
+        sudo apt-get update; \
+        sudo apt-get install -y python3-pip; \
         sudo apt install -y texlive \
             texlive-latex-extra \ 
             texlive-fonts-recommended \
             dvipng \ 
             cm-super; \
-        pip install latex \
-        mkdir validation; \
+        pip install latex; \
     elif [ "$VAR" = "replication" ] ; then \
-        mkdir -p $VAR/reweighing; \
+        mkdir -p data/reweighing $VAR/reweighing; \
     else \
         echo do something else; \
     fi
 
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+RUN pip install -e .

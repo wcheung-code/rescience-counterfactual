@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 
-from DoublyRobustEstimator import DoublyRobustEstimator
+from src.DoublyRobustEstimator import DoublyRobustEstimator
 
 class DataVisualizer(DoublyRobustEstimator):
     def __init__(self, plt_type, legend_name, parameters, n_bins = None):

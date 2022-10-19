@@ -1,8 +1,8 @@
 import numpy as np
 from collections import defaultdict
 
-from SyntheticData import SyntheticData
-from MetricFrameGenerator import MetricFrameGenerator
+from src.SyntheticData import SyntheticData
+from src.MetricFrameGenerator import MetricFrameGenerator
 
 class ReweighingExperiment():
     def __init__(self, parameters, domain):

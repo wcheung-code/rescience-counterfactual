@@ -1,7 +1,7 @@
 import numpy as np
 
-from DataVisualizer import DataVisualizer
-from ReweighingExperiment import ReweighingExperiment
+from src.DataVisualizer import DataVisualizer
+from src.ReweighingExperiment import ReweighingExperiment
 
 class ReweighingAnalysisVisualizer(DataVisualizer):
     def __init__(self, parameters):

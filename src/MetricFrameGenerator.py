@@ -2,7 +2,6 @@ import numpy as np
 from fairlearn.metrics import MetricFrame
 from fairlearn.metrics import true_negative_rate, false_negative_rate, true_positive_rate, false_positive_rate
 from fairlearn.metrics import selection_rate
-
 from sklearn.metrics import confusion_matrix
 
 class MetricFrameGenerator():

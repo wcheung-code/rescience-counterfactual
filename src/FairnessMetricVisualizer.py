@@ -2,8 +2,8 @@ from sklearn.metrics import roc_curve
 from sklearn.metrics import precision_recall_curve
 from sklearn.calibration import calibration_curve
 
-from DataVisualizer import DataVisualizer
-from DoublyRobustEstimator import DoublyRobustEstimator
+from src.DataVisualizer import DataVisualizer
+from src.DoublyRobustEstimator import DoublyRobustEstimator
 
 class FairnessMetricVisualizer(DataVisualizer):
     def __init__(self, metric, parameters):
