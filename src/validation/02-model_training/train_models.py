@@ -2,7 +2,7 @@ import os
 import glob
 import numpy as np
 import pandas as pd
-from scipy.stats import shapiro, norm, ks_2samp
+from scipy.stats import shapiro, norm, ks_2samp, anderson_ksamp
 from collections import defaultdict
 import matplotlib.pyplot as plt
 from matplotlib import rc
@@ -18,7 +18,7 @@ plt.rcParams.update({
 
 DATA_DIRECTORY = './data/validation/02-model_training'
 # TODO: Uncomment for Docker container
-FIGURE_DIRECTORY = './validation'
+#FIGURE_DIRECTORY = './validation'
 
 interpreter = {
     'python': 'python3',
@@ -39,7 +39,7 @@ def extract_coefs(filename):
 if __name__ == '__main__':
 
     # TODO: Uncomment for Docker container
-    os.makedirs(f"{FIGURE_DIRECTORY}/02-model_training", exist_ok = True)
+    #os.makedirs(f"{FIGURE_DIRECTORY}/02-model_training", exist_ok = True)
 
     tensor = {}
 
@@ -77,6 +77,10 @@ if __name__ == '__main__':
             print('---------------------------')
             print(f"P-value for {(feature, model)}: {ks_2samp(tensor['python'][i, j, :], tensor['r'][i, j, :])}")
             print('---------------------------')
+            print('Anderson-Darling Test Results:')
+            print('---------------------------')
+            print(f"P-value for {(feature, model)}: {anderson_ksamp([tensor['python'][i, j, :], tensor['r'][i, j, :]])}")
+            print('---------------------------')
 
             python_data = tensor['python'][i, j, :]
             r_data = tensor['r'][i, j, :]
@@ -106,6 +110,6 @@ if __name__ == '__main__':
             title = f"{model.capitalize()} Model Fitting Results (Coefficient: ${feature}$)"
             plt.title(title)
             plt.legend(loc='upper right')
-    #        plt.savefig(f"./reports/figures/validation/fig_synth_data_generation_{10*i + j}.png")
+            plt.savefig(f"./reports/figures/validation/fig_synth_data_generation_{10*i + j}.png")
             # TODO: Uncomment for Docker container
-            plt.savefig(f"{FIGURE_DIRECTORY}/02-model_training/fig_synth_data_generation_{i}.png")
+    #        plt.savefig(f"{FIGURE_DIRECTORY}/02-model_training/fig_synth_data_generation_{i}.png")

@@ -35,8 +35,7 @@ endif
 clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
-	find . -type f -name "seed_*.csv" -delete
-	find . -type f -name "fig_*" -delete
+	find ./reports/figures -mindepth 1 -delete
 
 # Set up python interpreter environment
 # create_environment:

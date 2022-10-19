@@ -4,3 +4,4 @@ scipy==1.8.1
 scikit-learn==1.0.2
 matplotlib==3.6.0
 cvxpy==1.2
+fairlearn==0.7.0

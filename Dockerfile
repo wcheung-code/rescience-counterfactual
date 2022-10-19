@@ -12,6 +12,10 @@ FROM rocker/tidyverse:4.0.1 AS validation
 RUN echo "this is the stage that sets VAR=validation"
 ENV VAR="validation"
 
+FROM python:3.8-slim-bullseye AS replication
+RUN echo "this is the stage that sets VAR=replication"
+ENV VAR="replication"
+
 ## Chooses docker build with respect to parameter `mode`
 FROM ${mode} AS final
 RUN echo "VAR is equal to ${VAR}"
@@ -23,28 +27,29 @@ WORKDIR /app
 ## Removes all irrelevant src files with respect to provided mode parameter
 RUN find ./src -mindepth 1 ! -regex '^./src/'$VAR'\(/.*\)?' -delete
 ## Removes all irrelevant data files with respect to provided mode parameter
-RUN find ./data -mindepth 1 ! -regex '^./data/'$VAR'\(/.*\)?' -delete
+#RUN find ./data -mindepth 1 ! -regex '^./data/'$VAR'\(/.*\)?' -delete
+
+RUN mkdir -p data $VAR/post_processed $VAR/precision_recall $VAR/roc $VAR/calibration;
 
 RUN if [ "$VAR" = "reproduction" ] ; then \
+        sudo apt-get update; \
+        sudo apt-get install -y python3-pip; \
         git clone https://github.com/mandycoston/counterfactual ./github/;\
         git clone https://github.com/mandycoston/equalized_odds_and_calibration/ ./github/equalized_odds_and_calibration/;\
-        mkdir reproduction;\
+        Rscript requirements.R; \
     elif [ "$VAR" = "validation" ] ; then \
+        sudo apt install -y texlive \
+            texlive-latex-extra \ 
+            texlive-fonts-recommended \
+            dvipng \ 
+            cm-super; \
+        pip install latex \
         mkdir validation; \
+    elif [ "$VAR" = "replication" ] ; then \
+        mkdir -p $VAR/reweighing; \
     else \
         echo do something else; \
     fi
 
-RUN sudo apt-get update
-RUN sudo apt-get install -y python3-pip 
-RUN sudo apt install -y texlive \
-    texlive-latex-extra \ 
-    texlive-fonts-recommended \
-    dvipng \ 
-    cm-super
-
 RUN pip install --upgrade pip
-# pre install the packages during build
-RUN Rscript requirements.R
-RUN pip install latex
 RUN pip install -r requirements.txt

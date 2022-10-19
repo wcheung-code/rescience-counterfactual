@@ -18,7 +18,7 @@ plt.rcParams.update({
 
 DATA_DIRECTORY = './data/validation/01-data_generation'
 # TODO: Uncomment for Docker container
-FIGURE_DIRECTORY = './validation'
+# FIGURE_DIRECTORY = './validation'
 
 interpreter = {
     'python': 'python3',
@@ -56,7 +56,7 @@ def generate_means(filename):
 if __name__ == '__main__':
 
     # TODO: Uncomment for Docker container
-    os.makedirs(f"{FIGURE_DIRECTORY}/01-data_generation", exist_ok = True)
+#    os.makedirs(f"{FIGURE_DIRECTORY}/01-data_generation", exist_ok = True)
 
     rates, extracts = {}, []
 
@@ -121,6 +121,6 @@ if __name__ == '__main__':
         title = f"Synthetic Data Generation Replication Results (Feature: ${col}$)"
         plt.title(title)
         plt.legend(loc='upper right')
-        # plt.savefig(f"./reports/figures/validation/fig_synth_data_generation_{i}.png")
+        plt.savefig(f"./reports/figures/validation/fig_synth_data_generation_{i}.png")
         # TODO: Uncomment for Docker container
-        plt.savefig(f"{FIGURE_DIRECTORY}/01-data_generation/fig_synth_data_generation_{i}.png")
+        #plt.savefig(f"{FIGURE_DIRECTORY}/01-data_generation/fig_synth_data_generation_{i}.png")

@@ -28,6 +28,7 @@ class SyntheticData():
             self.treatment_assignment_bias*A))
         Y = T*Y_1 + (1-T)*Y_0
 
+
         self.config = {
             'treat': {
                 'name': self.columns['treatment'], # column name of treatment data 
@@ -39,13 +40,15 @@ class SyntheticData():
             'features': {
                 'training': list(set(self.columns['features']) - set([self.columns['treatment'] if not treatment_as_feature else ''])),
                 'sensitive': self.columns['sensitive_feature'],
-            }, # predictors used for training model
-            'target': {
-                'observational': self.columns['observational_response'],
-                'counterfactual': self.columns['counterfactual_response'],
-            }, # response variable for training model
+            }, 
+            # response variable for training model
             'is_train': False, # identifier that determines if row is part of training data
             'sample_weight': None # presence of sample weights
+        }
+        # predictors used for training model
+        self.config['target'] = {
+            'observational': self.columns['observational_response'],
+            'counterfactual': self.columns['counterfactual_response'],
         }
 
         synthetic_data = dict(zip(self.columns['features'], [Z, A, T]))
