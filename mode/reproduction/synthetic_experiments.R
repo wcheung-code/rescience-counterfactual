@@ -107,6 +107,10 @@ errors <- compute_rates_synthetic(0.5, filter(test_post, A == 1)$mu_count, y0_va
 
 print(xtable(errors, caption = paste("Observational and counterfactual generalized FPR/FNR for the original and post-processed models for c =", toString(c), ", k = ", toString(k), sep = ""), label = paste("fig_synth_post_costs_c", c_str, "_k", k_str, sep = "")), floating = FALSE, latex.environments = NULL, file = paste(fig_folder, "post_processed/", "fig_table_seed_", sprintf("%03d", seed), ".tex", sep = ""), include.rownames = FALSE)
 
+## mode:validation
+#write.csv(filter(roc_df, Evaluation == "Counterfactual"), file = paste(data_folder, 'post_processed/', 'seed_', sprintf("%03d", seed), ".csv", sep = ""))
+
+
 # DR estimate of counterfactual calibration curve
 calib_dr <- compute_calib_df_dr(num_bins = 20, dat = test,obs_preds = quo(mu_obs),   count_preds = quo(mu_count), pi = quo(pi), Y = quo(y), treat = quo(treat_num), mu_true = quo(mu_count), attr = quo(A), attr_name = "A", attr_name_other = "not A") %>% filter(Group == "All")
 calib_dr$Evaluation <- "Doubly-robust"
@@ -131,6 +135,8 @@ calib_comb %>%
   ggplot(aes(x = Average.score, y = Rate, color = Model, fill = Model)) + facet_grid(. ~ Evaluation, labeller = as_labeller(evaluation_names_synth)) + scale_fill_manual(values = method_colors) + scale_color_manual(values = method_colors) + geom_ribbon(aes(ymin = Low, ymax = High, alpha = 0.4), linetype = 0) + geom_abline(slope = 1, intercept = 0, linetype = 5) + geom_line() + ylab("Outcome rate") + xlab("Average risk score") + scale_x_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c(0, .25, .5, .75, 1), limits = c(0, 1)) + scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c(0, .25, .5, .75, 1), limits = c(0, 1)) + coord_fixed(ratio = 1) + theme_bw(base_size = 15) + theme(legend.position = "none") + scale_alpha(guide = "none")
 ggsave(paste(fig_folder, "calibration/", "fig_seed_", sprintf("%03d", seed), ".png", sep = ""), width = 10, height = 3.6, dpi = 100)
 
+## mode:validation
+#write.csv(calib_comb, file = paste(data_folder, 'calibration/', 'seed_', sprintf("%03d", seed), ".csv", sep = ""))
 
 t_arr <- seq(0, 1, 0.001)
 ylim_begin <- 0
@@ -158,6 +164,8 @@ pr_comb$Model <- pr_comb$Method
 ggplot(pr_comb, aes(x = Recall, y = Precision, color = Model, fill = Model)) + geom_line() + scale_color_manual(values = method_colors) + facet_grid(. ~ Evaluation, labeller = as_labeller(evaluation_names_synth)) + coord_fixed(ratio = 1) + scale_x_continuous(labels = scale_format) + scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c(0, .25, .5, .75, 1), limits = c(0, 1)) + theme_bw(base_size = 15) + theme(legend.position = "top", legend.key.width = unit(2, "cm"))
 ggsave(paste(fig_folder, "precision_recall/", "fig_seed_", sprintf("%03d", seed), ".png", sep = ""), width = 10, height = 4, dpi = 1000)
 
+## mode:validation
+#write.csv(pr_comb, file = paste(data_folder, 'precision_recall/', 'seed_', sprintf("%03d", seed), ".csv", sep = ""))
 
 t_arr <- seq(0, 1, .01)
 #auc_A <- create_ROC_df(t_arr, filter(test, A == 1), "A", method1 = quo(mu_obs), method2 = quo(mu_count), method1_name = "Observational", method2_name = "Counterfactual", treat = quo(treat_num), pi = quo(pi), Y = quo(y), mu_true = quo(mu_count))
@@ -183,3 +191,6 @@ auc_all$Model <- auc_all$Method
 
 auc_all %>% ggplot(aes(x = FPR, y = Recall, color = Model, fill = Model)) + geom_line() + facet_grid(. ~ Evaluation, labeller = as_labeller(evaluation_names_synth)) + theme_bw(base_size = 15) + scale_color_manual(values = method_colors) + scale_x_continuous(labels = scale_format) + scale_y_continuous(breaks = c(0, 0.25, 0.5, 0.75, 1), labels = c(0, .25, .5, .75, 1), limits = c(0, 1)) + coord_fixed(ratio = 1) + theme(legend.position = "none")
 ggsave(paste(fig_folder, "roc/", "fig_seed_", sprintf("%03d", seed), ".png", sep = ""), width = 10, height = 3.6, dpi = 1000)
+
+## mode:validation
+#write.csv(auc_all, file = paste(data_folder, 'roc/', 'seed_', sprintf("%03d", seed), ".csv", sep = ""))

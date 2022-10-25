@@ -65,6 +65,7 @@ class DataVisualizer(DoublyRobustEstimator):
             if save:
                 plt.savefig(save, bbox_inches='tight')
             plt.show()
+            plt.close('all')
 
     def _plot_confidence_intervals(self, axis, df, x, y, color, label, title, alpha = 0.5):
         if title == 'True Counterfactual':

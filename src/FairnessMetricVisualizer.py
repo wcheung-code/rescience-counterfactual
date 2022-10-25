@@ -64,6 +64,7 @@ class FairnessMetricVisualizer(DataVisualizer):
                 plot.append((x, y, color, method))
             figure.append(plot)
         self.visualize(*figure, save = save)
+        return figure
 
     def _calibration(self, x, y):
         return calibration_curve(x, y, n_bins=20, strategy = 'quantile')

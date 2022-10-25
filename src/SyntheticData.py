@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 
 class SyntheticData():
-    def __init__(self, treatment_effect, treatment_assignment_bias, seed = 0):
+    def __init__(self, treatment_effect, treatment_assignment_bias, seed = None):
         self.seed = seed
         np.random.seed(self.seed)
         self.treatment_effect = treatment_effect

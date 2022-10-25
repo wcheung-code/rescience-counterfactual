@@ -31,7 +31,8 @@ class EqualizedOddsPostProcessingAnalysis(DataVisualizer):
                 original.append(content)
             else:
                 post_processed.append(content)
-        return self.visualize(self.metrics, df, original, post_processed, save = save)
+        self.visualize(self.metrics, df, original, post_processed, save = save)
+        return original, post_processed
 
     def error_analysis(self, df):
         for adj in ['observational', 'counterfactual']:

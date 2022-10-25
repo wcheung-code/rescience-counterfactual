@@ -1,7 +1,7 @@
 from sklearn.model_selection import train_test_split
 
 class SupervisedLearningModel():
-    def __init__(self, model, name = 'observational', seed = 0):
+    def __init__(self, model, name = 'observational', seed = None):
         self.model = model
         self.name = name
         self.seed = seed
