@@ -13,13 +13,8 @@ from src.EqualizedOddsPostProcesser import EqualizedOddsPostProcesser
 from src.EqualizedOddsPostProcessingAnalysis import EqualizedOddsPostProcessingAnalysis
 from src.FairnessMetricVisualizer import FairnessMetricVisualizer
 
-import pickle
-
 if __name__ == '__main__':
 
-    # project_dir = os.path.join(os.path.dirname(__file__), os.pardir, os.pardir)
-    # dotenv_path = os.path.join(project_dir, '.env')
-    # dotenv.load_dotenv(dotenv_path)
     FIGURE_DIRECTORY = "./replication"
 
     parser = argparse.ArgumentParser()
@@ -80,24 +75,12 @@ if __name__ == '__main__':
     with open( f"{FIGURE_DIRECTORY}/post_processed/fig_roc_seed_{str(seed).zfill(3)}.tex", 'w') as f:
         f.write(errors.to_latex(column_format='llrrrr', index=False))
 
-    with open(f"./data/post_processed/seed_{str(seed).zfill(3)}.p", 'wb') as f:
-        pickle.dump(_eo, f)
-
     test_df = postprocessed['test']
     roc = FairnessMetricVisualizer(metric = 'roc', parameters = config)
     _roc = roc.visualize_metric(test_df, save = f"{FIGURE_DIRECTORY}/roc/fig_seed_{str(seed).zfill(3)}.png")
 
-    with open(f"./data/roc/seed_{str(seed).zfill(3)}.p", 'wb') as f:
-        pickle.dump(_roc, f)
-
     precision_recall = FairnessMetricVisualizer(metric = 'precision_recall', parameters = config)
     _pr = precision_recall.visualize_metric(test_df, save = f"{FIGURE_DIRECTORY}/precision_recall/fig_seed_{str(seed).zfill(3)}.png")
 
-    with open(f"./data/precision_recall/seed_{str(seed).zfill(3)}.p", 'wb') as f:
-        pickle.dump(_pr, f)
-
     calibration = FairnessMetricVisualizer(metric = 'calibration', parameters = config)
     _calibration = calibration.visualize_metric(test_df, save = f"{FIGURE_DIRECTORY}/calibration/fig_seed_{str(seed).zfill(3)}.png")
-
-    with open(f"./data/calibration/seed_{str(seed).zfill(3)}.p", 'wb') as f:
-        pickle.dump(_calibration, f)
