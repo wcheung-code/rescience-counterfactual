@@ -10,6 +10,8 @@ class SyntheticData():
 
     def generate(self, num_points, treatment_as_feature = False):
 
+        np.random.seed(self.seed)
+
         self.columns = {
             'treatment': 'treat_num',
             'outcome': 'outcome',
